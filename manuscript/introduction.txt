@@ -1,0 +1,28 @@
+cite polich!! 1989 passive vs active erps
+
+Cognition as a Journal
+Broad readership: Unlike JOCN, which is squarely in cognitive neuroscience, Cognition reaches psychologists, linguists, and cognitive scientists more generally. That means you’ll want to frame the work in terms of general mechanisms of attention and auditory expertise, not just neural signal properties.
+
+
+Conceptual hook: Cognition papers tend to foreground a big idea (what does this say about cognitive mechanisms, resource allocation, or attention?), with the neural details serving as evidence. Your passive vs. active asymmetry can be pitched as evidence for flexible vs. fixed auditory resource allocation.
+
+
+Conciseness and clarity: Cognition values streamlined reporting—methods and results are rigorous, but not encyclopedic. They’re less tolerant of pages of dense neurophysiological detail unless it’s tied to theory.
+
+
+No Results-first tradition: Unlike JOCN (which often allows very methods-heavy, signal-oriented reports), Cognition puts more emphasis on interpretation. Your discussion will likely need to carry more weight.
+
+
+
+Writing Process Considerations
+Figures first: Since you’re on Day 1 computing effect sizes and polishing figures, spend time making them self-contained and explanatory. Cognition reviewers will expect the figures to clearly tell the story without much jargon.
+
+
+Results flow: You’ll want to emphasize the contrast between amplitude and PLV results. Spell out why one changes and the other doesn’t, and what that dissociation means conceptually.
+
+
+Methods brevity: Don’t overexplain FFR preprocessing unless it is novel. JOCN-level detail can be referenced (“as in [Author, Year]”), with just enough for replication.
+
+
+Intro/Discussion balance: Keep the intro tight—set up why passive vs. active matters for auditory expertise and resource allocation. Use the discussion to connect back to cognitive theories of attention and learning. Think of it as: “Why does the brain amplify under passive listening, and what does the lack of PLV change tell us about precision vs. gain?”
+
