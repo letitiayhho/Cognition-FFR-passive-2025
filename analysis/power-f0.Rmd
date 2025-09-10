@@ -91,7 +91,45 @@ d_emm <- eff_size(emm, sigma = sigma(model), edf = df.residual(model))
 print(d_emm)
 ```
 
-#### By tone, condition, condition order, and accuracy
+#### By tone, condition, and accuracy
+
+```{r}
+model <- lmer(dB ~ tone * passive * accuracy + (1 | subject), data = df)
+summary(model)
+```
+
+```{r}
+# Conditional and Marginal R^2 for variance explained by fixed effects and random effects, and fixed effects alone
+r2_nakagawa(model)
+
+# Semi-partial R² (R²β)* for individual predictors
+r2beta(model, method = "nsj", partial = TRUE)
+```
+
+```{r}
+# Post-hoc comparisons
+print("----------- tone -----------")
+emm <- emmeans(model, ~ tone, adjust = 'tukey')
+print(emm)
+pairs(emm)
+d_emm <- eff_size(emm, sigma = sigma(model), edf = df.residual(model))
+print(d_emm)
+print("----------- passive -----------")
+emm_int <- emmeans(model, ~ tone * passive, adjust = 'tukey')
+print(emm_int)
+pairs(emm_int, by = 'tone')
+d_emm <- eff_size(emm, sigma = sigma(model), edf = df.residual(model))
+print(d_emm)
+print("----------- tone * accuracy -----------")
+emm_int <- emmeans(model, ~ tone * accuracy, adjust = 'tukey')
+print(emm_int)
+pairs(emm_int, by = 'tone')
+d_emm <- eff_size(emm, sigma = sigma(model), edf = df.residual(model))
+print(d_emm)
+```
+
+
+#### By tone, condition, accuracy, and condition order
 
 ```{r}
 model <- lmer(dB ~ tone * passive * passive_order * accuracy + (1 | subject), data = df)
