@@ -1,0 +1,72 @@
+---
+title: "Chapter-4-passive-vs-active"
+output: html_notebook
+---
+```{r}
+library(lme4)
+library(lmerTest)
+library(emmeans)
+```
+
+## Assessing performance with groups
+
+```{r}
+(df <- read.csv('~/Documents/Work/dissertation/Cognition-FFR-passive-2025/analysis/power-f0-with-groups copy.csv'))
+df <- df[df$subject != 2,]
+df <- df[df$subject != 4,]
+```
+
+```{r}
+df$passive <- as.factor(df$passive)
+df$tone <- as.factor(df$tone)
+df$target <- as.factor(df$target)
+df$passive_order <- as.factor(df$passive_order)
+df$group <- as.factor(df$group)
+```
+
+#### By tone, condition, and accuracy
+
+```{r}
+model <- lmer(dB ~ tone * passive * passive_order * group + (1 | subject), data = df)
+summary(model)
+```
+
+```{r}
+# Post-hoc comparisons
+print("----------- tone -----------")
+emm <- emmeans(model, ~ tone, adjust = 'tukey')
+print(emm)
+pairs(emm)
+d_emm <- eff_size(emm, sigma = sigma(model), edf = df.residual(model))
+print(d_emm)
+print("----------- group -----------")
+emm <- emmeans(model, ~ group, adjust = 'tukey')
+print(emm)
+pairs(emm)
+d_emm <- eff_size(emm, sigma = sigma(model), edf = df.residual(model))
+print(d_emm)
+print("----------- passive_order -----------")
+emm <- emmeans(model, ~ passive_order, adjust = 'tukey')
+print(emm)
+pairs(emm)
+d_emm <- eff_size(emm, sigma = sigma(model), edf = df.residual(model))
+print(d_emm)
+print("----------- tone * passive_order -----------")
+emm <- emmeans(model, ~ tone * passive_order, adjust = 'tukey')
+print(emm_int)
+pairs(emm_int, by = 'tone')
+d_emm <- eff_size(emm_int, sigma = sigma(model), edf = df.residual(model))
+print(d_emm)
+print("----------- tone * group -----------")
+emm_int <- emmeans(model, ~ tone * group, adjust = 'tukey')
+print(emm_int)
+pairs(emm_int, by = 'tone')
+d_emm <- eff_size(emm_int, sigma = sigma(model), edf = df.residual(model))
+print(d_emm)
+print("----------- tone * passive_order * group -----------")
+emm_int <- emmeans(model, ~ tone * passive_order * group, adjust = 'tukey')
+print(emm_int)
+pairs(emm_int, by = 'tone')
+d_emm <- eff_size(emm_int, sigma = sigma(model), edf = df.residual(model))
+print(d_emm)
+```

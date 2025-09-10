@@ -1,0 +1,43 @@
+---
+title: "plvs-fft-with-groups"
+output: html_notebook
+---
+```{r}
+library(lme4)
+library(lmerTest)
+library(emmeans)
+```
+
+
+```{r}
+(df <- read.csv('~/Documents/Work/dissertation/Cognition-FFR-passive-2025/analysis/plvs-with-groups.csv'))
+```
+
+```{r}
+df$passive <- as.factor(df$passive)
+df$stim_freq <- as.factor(df$stim_freq)
+df$passive_order <- as.factor(df$passive_order)
+df$group <- as.factor(df$group)
+```
+
+```{r}
+model <- lmer(plv ~ passive * stim_freq * passive_order * group + (1 | sub), data = df)
+summary(model)
+```
+
+```{r}
+# Post-hoc comparisons
+print("----------- tone -----------")
+emm <- emmeans(model, ~ stim_freq, adjust = 'tukey')
+print(emm)
+pairs(emm)
+d_emm <- eff_size(emm, sigma = sigma(model), edf = df.residual(model))
+print(d_emm)
+print("----------- tone * condition order -----------")
+emm <- emmeans(model, ~ stim_freq * passive_order, adjust = 'tukey')
+print(emm)
+pairs(emm)
+d_emm <- eff_size(emm, sigma = sigma(model), edf = df.residual(model))
+print(d_emm)
+```
+

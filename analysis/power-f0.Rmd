@@ -1,0 +1,98 @@
+---
+title: "Chapter-4-passive-vs-active"
+output: html_notebook
+---
+```{r}
+library(lme4)
+library(lmerTest)
+library(emmeans)
+```
+
+## Assessing performance with accuracy (high vs low)
+
+```{r}
+(df <- read.csv('~/Documents/Work/dissertation/Cognition-FFR-passive-2025/analysis/power-f0.csv'))
+df$passive <- as.factor(df$passive)
+df$passive_order <- as.factor(df$passive_order)
+df$tone <- as.factor(df$tone)
+df$target <- as.factor(df$target)
+df$accuracy <- as.factor(df$accuracy)
+df <- df[df$subject != 2,]
+df <- df[df$subject != 4,]
+```
+
+#### By condition
+
+```{r}
+model <- lmer(dB ~ passive * tone + (1 | subject), data = df)
+summary(model)
+```
+
+
+```{r}
+# Post-hoc comparisons
+print("----------- passive -----------")
+emm <- emmeans(model, ~ passive, adjust = 'tukey')
+print(emm)
+pairs(emm)
+d_emm <- eff_size(emm, sigma = sigma(model), edf = df.residual(model))
+print(d_emm)
+print("----------- tone -----------")
+emm <- emmeans(model, ~ tone, adjust = 'tukey')
+print(emm)
+pairs(emm)
+d_emm <- eff_size(emm, sigma = sigma(model), edf = df.residual(model))
+print(d_emm)
+print("----------- tone * passive -----------")
+emm_int <- emmeans(model, ~ tone * passive, adjust = 'tukey')
+print(emm_int)
+pairs(emm_int, by = 'tone')
+d_emm <- eff_size(emm, sigma = sigma(model), edf = df.residual(model))
+print(d_emm)
+```
+
+#### By target
+
+```{r}
+df_active <- df[df$passive == 'False',]
+model <- lmer(dB ~ tone * target + (1 | subject), data = df_active)
+summary(model)
+```
+
+```{r}
+print("----------- tone -----------")
+emm <- emmeans(model, ~ tone, adjust = 'tukey')
+print(emm)
+pairs(emm)
+d_emm <- eff_size(emm, sigma = sigma(model), edf = df.residual(model))
+print(d_emm)
+```
+
+#### By tone, condition, condition order, and accuracy
+
+```{r}
+model <- lmer(dB ~ tone * passive * passive_order * accuracy + (1 | subject), data = df)
+summary(model)
+```
+
+```{r}
+# Post-hoc comparisons
+print("----------- tone -----------")
+emm <- emmeans(model, ~ tone, adjust = 'tukey')
+print(emm)
+pairs(emm)
+d_emm <- eff_size(emm, sigma = sigma(model), edf = df.residual(model))
+print(d_emm)
+print("----------- tone * passive_order -----------")
+emm_int <- emmeans(model, ~ tone * passive_order, adjust = 'tukey')
+print(emm_int)
+pairs(emm_int, by = 'tone')
+d_emm <- eff_size(emm, sigma = sigma(model), edf = df.residual(model))
+print(d_emm)
+print("----------- tone * accuracy -----------")
+emm_int <- emmeans(model, ~ tone * accuracy, adjust = 'tukey')
+print(emm_int)
+pairs(emm_int, by = 'tone')
+d_emm <- eff_size(emm, sigma = sigma(model), edf = df.residual(model))
+print(d_emm)
+```
