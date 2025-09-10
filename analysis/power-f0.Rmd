@@ -6,6 +6,8 @@ output: html_notebook
 library(lme4)
 library(lmerTest)
 library(emmeans)
+library(performance) # for conditional and marginal R^2 for overall model
+library(r2glmm) # for semi-partial R^2 for each predictor
 ```
 
 ## Assessing performance with accuracy (high vs low)
@@ -26,6 +28,19 @@ df <- df[df$subject != 4,]
 ```{r}
 model <- lmer(dB ~ passive * tone + (1 | subject), data = df)
 summary(model)
+```
+
+```{r}
+# Conditional and Marginal R^2 for variance explained by fixed effects and random effects, and fixed effects alone
+r2_nakagawa(model)
+
+# Semi-partial R² (R²β)* for individual predictors
+r2beta(model, method = "nsj", partial = TRUE)
+```
+
+```{r}
+# model <- lmer(dB ~ passive * passive_order * tone + (1 | subject), data = df)
+# summary(model)
 ```
 
 
@@ -60,6 +75,14 @@ summary(model)
 ```
 
 ```{r}
+# Conditional and Marginal R^2 for variance explained by fixed effects and random effects, and fixed effects alone
+r2_nakagawa(model)
+
+# Semi-partial R² (R²β)* for individual predictors
+r2beta(model, method = "nsj", partial = TRUE)
+```
+
+```{r}
 print("----------- tone -----------")
 emm <- emmeans(model, ~ tone, adjust = 'tukey')
 print(emm)
@@ -73,6 +96,14 @@ print(d_emm)
 ```{r}
 model <- lmer(dB ~ tone * passive * passive_order * accuracy + (1 | subject), data = df)
 summary(model)
+```
+
+```{r}
+# Conditional and Marginal R^2 for variance explained by fixed effects and random effects, and fixed effects alone
+r2_nakagawa(model)
+
+# Semi-partial R² (R²β)* for individual predictors
+r2beta(model, method = "nsj", partial = TRUE)
 ```
 
 ```{r}

@@ -6,12 +6,14 @@ output: html_notebook
 library(lme4)
 library(lmerTest)
 library(emmeans)
+library(performance) # for conditional and marginal R^2 for overall model
+library(r2glmm) # for semi-partial R^2 for each predictor
 ```
 
 ## Assessing performance with groups
 
 ```{r}
-(df <- read.csv('~/Documents/Work/dissertation/Cognition-FFR-passive-2025/analysis/power-f0-with-groups copy.csv'))
+(df <- read.csv('~/Documents/Work/dissertation/Cognition-FFR-passive-2025/analysis/power-f0-with-groups.csv'))
 df <- df[df$subject != 2,]
 df <- df[df$subject != 4,]
 ```
@@ -29,6 +31,14 @@ df$group <- as.factor(df$group)
 ```{r}
 model <- lmer(dB ~ tone * passive * passive_order * group + (1 | subject), data = df)
 summary(model)
+```
+
+```{r}
+# Conditional and Marginal R^2 for variance explained by fixed effects and random effects, and fixed effects alone
+r2_nakagawa(model)
+
+# Semi-partial R² (R²β)* for individual predictors
+r2beta(model, method = "nsj", partial = TRUE)
 ```
 
 ```{r}
